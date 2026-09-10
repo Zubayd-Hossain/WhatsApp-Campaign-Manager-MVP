@@ -2,384 +2,699 @@
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
-    <meta viewport="width=device-width, initial-scale=1.0">
-    <title>WhatsApp Private Campaign Manager (MVP)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Privacy Broadcast Manager MVP</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome for Icons -->
+    <!-- FontAwesome CDN for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Hind Siliguri -->
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .chat-bg {
+            background-color: #e5ddd5;
+            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 12px 12px;
+        }
+    </style>
 </head>
-<body class="bg-gray-50 font-sans text-gray-800">
+<body class="text-slate-800">
 
-    <div id="app" class="flex h-screen overflow-hidden">
-        
-        <!-- Sidebar -->
-        <aside class="w-64 bg-emerald-800 text-white flex flex-col justify-between hidden md:flex">
-            <div>
-                <div class="p-5 text-2xl font-bold flex items-center gap-2 border-b border-emerald-700">
-                    <i class="fa-brands fa-whatsapp text-3xl text-emerald-400"></i>
-                    <span>WaCampaign</span>
+    <!-- Top Navigation Bar -->
+    <header class="bg-emerald-700 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3 space-x-reverse">
+                <i class="fa-brands fa-whatsapp text-3xl text-emerald-300"></i>
+                <div>
+                    <h1 class="text-xl font-bold leading-tight">WhatsApp Privacy Campaign Manager</h1>
+                    <p class="text-xs text-emerald-200">Meta Cloud API Powered Private Broadcasting</p>
                 </div>
-                <nav class="mt-5 space-y-1">
-                    <button onclick="switchTab('dashboard')" id="nav-dashboard" class="w-full flex items-center gap-3 px-6 py-3 bg-emerald-900 text-white font-medium transition">
-                        <i class="fa-solid fa-chart-pie w-5"></i> Dashboard
+            </div>
+            <div class="flex items-center space-x-3 space-x-reverse">
+                <span class="bg-emerald-800 border border-emerald-500 text-emerald-100 text-xs px-3 py-1 rounded-full flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    100% Privacy Protected (No Group View)
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Application Container -->
+    <div class="max-w-7xl mx-auto px-4 py-6 grid grid-cols-1 md:grid-cols-12 gap-6">
+
+        <!-- Sidebar Navigation -->
+        <aside class="md:col-span-3">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden sticky top-20">
+                <div class="p-4 bg-slate-50 border-b border-slate-200">
+                    <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">মেনু নেভিগেশন</p>
+                </div>
+                <nav class="p-2 space-y-1">
+                    <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-btn w-full flex items-center space-x-3 space-x-reverse px-4 py-3 rounded-lg text-emerald-700 bg-emerald-50 font-semibold transition">
+                        <i class="fa-solid fa-chart-pie w-5 text-center"></i>
+                        <span>ড্যাশবোর্ড (Overview)</span>
                     </button>
-                    <button onclick="switchTab('customers')" id="nav-customers" class="w-full flex items-center gap-3 px-6 py-3 text-emerald-200 hover:bg-emerald-700 hover:text-white transition">
-                        <i class="fa-solid fa-users w-5"></i> Customers
+                    <button onclick="switchTab('contacts')" id="nav-contacts" class="nav-btn w-full flex items-center space-x-3 space-x-reverse px-4 py-3 rounded-lg text-slate-600 hover:bg-slate-100 font-medium transition">
+                        <i class="fa-solid fa-address-book w-5 text-center"></i>
+                        <span>কাস্টমার লিস্ট ও ক্যাটাগরি</span>
                     </button>
-                    <button onclick="switchTab('campaigns')" id="nav-campaigns" class="w-full flex items-center gap-3 px-6 py-3 text-emerald-200 hover:bg-emerald-700 hover:text-white transition">
-                        <i class="fa-solid fa-paper-plane w-5"></i> New Campaign
+                    <button onclick="switchTab('campaign')" id="nav-campaign" class="nav-btn w-full flex items-center space-x-3 space-x-reverse px-4 py-3 rounded-lg text-slate-600 hover:bg-slate-100 font-medium transition">
+                        <i class="fa-solid fa-paper-plane w-5 text-center"></i>
+                        <span>নতুন ক্যাম্পেইন তৈরি করুন</span>
+                    </button>
+                    <button onclick="switchTab('history')" id="nav-history" class="nav-btn w-full flex items-center space-x-3 space-x-reverse px-4 py-3 rounded-lg text-slate-600 hover:bg-slate-100 font-medium transition">
+                        <i class="fa-solid fa-clock-rotate-left w-5 text-center"></i>
+                        <span>মেসেজ হিস্ট্রি ও স্ট্যাটাস</span>
+                    </button>
+                    <button onclick="switchTab('tech-guide')" id="nav-tech-guide" class="nav-btn w-full flex items-center space-x-3 space-x-reverse px-4 py-3 rounded-lg text-slate-600 hover:bg-slate-100 font-medium transition">
+                        <i class="fa-solid fa-code w-5 text-center text-blue-600"></i>
+                        <span class="text-blue-700 font-semibold">API, রুলস ও খরচ গাইড</span>
                     </button>
                 </nav>
             </div>
-            <div class="p-4 border-t border-emerald-700 text-xs text-emerald-300">
-                <p><i class="fa-solid fa-shield-halved"></i> 100% Privacy Protected</p>
-                <p class="mt-1">Meta Cloud API Ready (MVP)</p>
-            </div>
         </aside>
 
-        <!-- Main Content Area -->
-        <main class="flex-1 flex flex-col h-screen overflow-y-auto">
-            
-            <!-- Top Header -->
-            <header class="bg-white shadow-sm h-16 flex items-center justify-between px-6 border-b">
-                <h1 id="page-title" class="text-xl font-bold text-gray-800">ড্যাশবোর্ড ওভারভিউ</h1>
-                <div class="flex items-center gap-3">
-                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
-                        <span class="w-2 h-2 mr-1.5 bg-emerald-500 rounded-full animate-pulse"></span> API Connected (Demo)
-                    </span>
-                    <div class="w-10 h-10 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold">
-                        AB
-                    </div>
-                </div>
-            </header>
+        <!-- Main Workspace -->
+        <main class="md:col-span-9">
 
-            <!-- Dynamic Views Container -->
-            <div class="p-6 flex-1">
-                
-                <!-- 1. DASHBOARD VIEW -->
-                <div id="view-dashboard" class="space-y-6">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                            <div class="flex justify-between items-center">
-                                <div>
-                                    <p class="text-sm text-gray-500">মোট কাস্টমার</p>
-                                    <h3 id="stat-total-customers" class="text-3xl font-bold mt-1 text-gray-800">0</h3>
-                                </div>
-                                <div class="w-12 h-12 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-xl">
-                                    <i class="fa-solid fa-users"></i>
-                                </div>
-                            </div>
+            <!-- 1. DASHBOARD TAB -->
+            <section id="tab-dashboard" class="tab-content space-y-6">
+                <!-- Summary Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+                        <div>
+                            <p class="text-xs text-slate-500 font-medium">মোট কাস্টমার নম্বর</p>
+                            <h3 id="dash-total-contacts" class="text-2xl font-bold text-slate-800 mt-1">0</h3>
                         </div>
-                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                            <div class="flex justify-between items-center">
-                                <div>
-                                    <p class="text-sm text-gray-500">ক্যাটাগরি সংখ্যা</p>
-                                    <h3 class="text-3xl font-bold mt-1 text-gray-800">6</h3>
-                                </div>
-                                <div class="w-12 h-12 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl">
-                                    <i class="fa-solid fa-tags"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                            <div class="flex justify-between items-center">
-                                <div>
-                                    <p class="text-sm text-gray-500">সফল ক্যাম্পেইন</p>
-                                    <h3 id="stat-total-campaigns" class="text-3xl font-bold mt-1 text-gray-800">0</h3>
-                                </div>
-                                <div class="w-12 h-12 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center text-xl">
-                                    <i class="fa-solid fa-paper-plane"></i>
-                                </div>
-                            </div>
+                        <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-users"></i>
                         </div>
                     </div>
-
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                        <h3 class="text-lg font-semibold mb-4 text-gray-800">প্রাইভেসি প্রোটেকশন গ্যারান্টি</h3>
-                        <p class="text-gray-600 text-sm leading-relaxed">
-                            এই অ্যাপ্লিকেশনের মাধ্যমে আপনি যখনই কোনো ক্যাম্পেইন চালাবেন, প্রতিটি মেসেজ কাস্টমারের কাছে এককভাবে (Direct/Individual Message) পৌঁছাবে। কোনো অবস্থাতেই অন্য কোনো কাস্টমার বা থার্ড-পার্টি সাপ্লায়ার আপনার ডাটাবেজের কাস্টমারদের ফোন নম্বর বা নাম দেখতে পারবে না। WhatsApp Cloud API সম্পূর্ণ গোপনীয়তা ও নিরাপত্তা নিশ্চিত করে।
-                        </p>
+                    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+                        <div>
+                            <p class="text-xs text-slate-500 font-medium">কাস্টমার ক্যাটাগরি</p>
+                            <h3 id="dash-total-categories" class="text-2xl font-bold text-slate-800 mt-1">6</h3>
+                        </div>
+                        <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-layer-group"></i>
+                        </div>
+                    </div>
+                    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+                        <div>
+                            <p class="text-xs text-slate-500 font-medium">প্রাইভেসি প্রোটেকশন স্ট্যাটাস</p>
+                            <h3 class="text-lg font-bold text-emerald-600 mt-1">১০০% সুরক্ষিত</h3>
+                        </div>
+                        <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
                     </div>
                 </div>
 
-                <!-- 2. CUSTOMERS VIEW -->
-                <div id="view-customers" class="space-y-6 hidden">
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                        <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
-                            <h3 class="text-lg font-semibold text-gray-800">কাস্টমার ডাটাবেজ ম্যানেজমেন্ট</h3>
-                            <button onclick="openAddCustomerModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2">
-                                <i class="fa-solid fa-user-plus"></i> নতুন কাস্টমার যোগ করুন
+                <!-- Problem vs Solution Explanation -->
+                <div class="bg-gradient-to-r from-emerald-900 to-slate-900 text-white rounded-xl p-6 shadow-lg">
+                    <div class="flex items-start gap-4">
+                        <div class="bg-emerald-500/20 p-3 rounded-lg border border-emerald-400/30 text-emerald-300">
+                            <i class="fa-solid fa-[#10b981] fa-user-lock text-3xl"></i>
+                        </div>
+                        <div class="space-y-2">
+                            <h3 class="text-lg font-bold text-emerald-300">কাস্টমার নম্বর সুরক্ষার মূল প্রযুক্তি</h3>
+                            <p class="text-sm text-slate-200 leading-relaxed">
+                                আপনি হোয়াটসঅ্যাপ গ্রুপ ব্যবহার করলে এডমিন অনলি করলেও মেম্বারদের লিস্ট থেকে কাস্টমারদের ফোন নম্বর প্রকাশ পেয়ে যায়। কিন্তু আমাদের প্রস্তাবিত **WhatsApp Cloud API** ডাইরেক্ট সার্ভার-টু-কাস্টমার ১-টু-১ মেসেজিং মেথড অনুসরণ করে। প্রতিটি মেসেজ কাস্টমার তার ইনবক্সে একদম আলাদাভাবে পাবে, তাই আপনার কোনো কাস্টমার অন্য কাস্টমারের অস্তিত্বও জানতে পারবে না।
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Action Button -->
+                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                    <h3 class="text-md font-bold text-slate-800 mb-4">কুইক অ্যাকশন</h3>
+                    <div class="flex flex-wrap gap-3">
+                        <button onclick="switchTab('campaign')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-lg text-sm font-semibold flex items-center gap-2 transition">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            নতুন ব্রডকাস্ট পাঠাল
+                        </button>
+                        <button onclick="switchTab('contacts')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-5 py-2.5 rounded-lg text-sm font-semibold flex items-center gap-2 transition">
+                            <i class="fa-solid fa-user-plus"></i>
+                            নতুন কাস্টমার যোগ করুন
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. CONTACTS & CATEGORY TAB -->
+            <section id="tab-contacts" class="tab-content hidden space-y-6">
+                <!-- Add Contact & List Header -->
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-5 rounded-xl border border-slate-200">
+                    <div>
+                        <h2 class="text-lg font-bold text-slate-800">কাস্টমার প্রাইভেট ডেটাবেস</h2>
+                        <p class="text-xs text-slate-500">কাস্টমারের ফোন নম্বর এবং ট্যাগ ক্যাটাগরি তৈরি ও নিয়ন্ত্রণ করুন</p>
+                    </div>
+                    <button onclick="toggleModal('add-contact-modal', true)" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2">
+                        <i class="fa-solid fa-plus"></i>
+                        কাস্টমার এন্ট্রি করুন
+                    </button>
+                </div>
+
+                <!-- Filter Categories -->
+                <div class="bg-white p-4 rounded-xl border border-slate-200 flex flex-wrap gap-2 items-center">
+                    <span class="text-xs font-semibold text-slate-500 mr-2">ফিল্টার করুন:</span>
+                    <button onclick="filterContacts('all')" class="cat-filter-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-600 text-white" data-cat="all">সব কাস্টমার</button>
+                    <button onclick="filterContacts('Wholesale Customer')" class="cat-filter-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200" data-cat="Wholesale Customer">Wholesale Customer</button>
+                    <button onclick="filterContacts('Retail Customer')" class="cat-filter-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200" data-cat="Retail Customer">Retail Customer</button>
+                    <button onclick="filterContacts('VIP Customer')" class="cat-filter-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200" data-cat="VIP Customer">VIP Customer</button>
+                    <button onclick="filterContacts('TV Customer')" class="cat-filter-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200" data-cat="TV Customer">TV Customer</button>
+                    <button onclick="filterContacts('Speaker Customer')" class="cat-filter-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200" data-cat="Speaker Customer">Speaker Customer</button>
+                    <button onclick="filterContacts('Regular Customer')" class="cat-filter-btn px-3 py-1.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200" data-cat="Regular Customer">Regular Customer</button>
+                </div>
+
+                <!-- Contacts Table -->
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-slate-50 border-b border-slate-200 text-xs text-slate-500 uppercase tracking-wider">
+                                    <th class="p-4">কাস্টমারের নাম</th>
+                                    <th class="p-4">WhatsApp নম্বর</th>
+                                    <th class="p-4">ক্যাটাগরি / লিস্ট</th>
+                                    <th class="p-4">স্ট্যাটাস</th>
+                                    <th class="p-4 text-center">অ্যাকশন</th>
+                                </tr>
+                            </thead>
+                            <tbody id="contacts-table-body" class="divide-y divide-slate-100 text-sm">
+                                <!-- Dynamic contacts injected via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. CREATE CAMPAIGN TAB -->
+            <section id="tab-campaign" class="tab-content hidden space-y-6">
+                <div class="bg-white p-5 rounded-xl border border-slate-200">
+                    <h2 class="text-lg font-bold text-slate-800">নতুন WhatsApp ক্যাম্পেইন পাঠাল</h2>
+                    <p class="text-xs text-slate-500">নির্দিষ্ট কাস্টমার লিস্ট নির্বাচন করে মেসেজ এবং ইমেজ পাঠাল</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <!-- Form Side -->
+                    <div class="lg:col-span-7 bg-white p-6 rounded-xl border border-slate-200 space-y-5">
+                        
+                        <!-- Step 1: Select Category List -->
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">১. টার্গেট কাস্টমার লিস্ট নির্বাচন করুন</label>
+                            <select id="campaign-category" onchange="updateRecipientCount()" class="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                                <option value="Wholesale Customer">Wholesale Customer</option>
+                                <option value="Retail Customer">Retail Customer</option>
+                                <option value="VIP Customer">VIP Customer</option>
+                                <option value="TV Customer">TV Customer</option>
+                                <option value="Speaker Customer">Speaker Customer</option>
+                                <option value="Regular Customer">Regular Customer</option>
+                                <option value="ALL">সকল কাস্টমার (All Contacts)</option>
+                            </select>
+                            <p id="recipient-count-badge" class="text-xs text-emerald-600 font-semibold mt-1.5 flex items-center gap-1">
+                                <i class="fa-solid fa-circle-check"></i>
+                                <span>এই লিস্টে ৩ জন কাস্টমার পাওয়া গেছে</span>
+                            </p>
+                        </div>
+
+                        <!-- Step 2: Message Text -->
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">২. মেসেজের বিষয়বস্তু লিখুন</label>
+                            <textarea id="campaign-message" rows="5" oninput="updatePreview()" class="w-full border border-slate-300 rounded-lg p-3 text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none" placeholder="আপনার কাস্টমারকে দেওয়ার আপডেট এখানে লিখুন...">সম্মানিত কাস্টমার, আমাদের গ্যা্যালারিতে নতুন প্রোডাক্ট চলে এসেছে! সেরা অফারে প্রোডাক্টটি পেতে এখনই আমাদের সাথে যোগাযোগ করুন।</textarea>
+                            <span class="text-xs text-slate-400 mt-1 block">* কাস্টমারের নাম ডায়নামিক অটো-যুক্ত হবে।</span>
+                        </div>
+
+                        <!-- Step 3: Attach Image -->
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">৩. প্রোডাক্টের ছবি যুক্ত করুন (গ্যালারি থেকে)</label>
+                            <div class="flex items-center space-x-3 space-x-reverse">
+                                <label class="cursor-pointer bg-slate-100 border border-slate-300 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2">
+                                    <i class="fa-solid fa-image text-emerald-600"></i>
+                                    ছবি নির্বাচন করুন
+                                    <input type="file" id="campaign-image-input" accept="image/*" onchange="handleImageUpload(event)" class="hidden">
+                                </label>
+                                <span id="image-filename" class="text-xs text-slate-500">ডিফল্ট ডেমো ছবি ব্যবহৃত হচ্ছে</span>
+                            </div>
+                        </div>
+
+                        <!-- Step 4: Send Button -->
+                        <div class="pt-4 border-t border-slate-200">
+                            <button onclick="startCampaignSend()" id="send-btn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-lg flex justify-center items-center gap-2 shadow-md transition">
+                                <i class="fa-solid fa-paper-plane"></i>
+                                <span>মেসেজ পাঠানো শুরু করুন (১-টু-১ প্রাইভেট)</span>
                             </button>
                         </div>
 
-                        <!-- Customer Table -->
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left border-collapse">
-                                <thead>
-                                    <tr class="border-b bg-gray-50 text-xs font-semibold text-gray-500 uppercase">
-                                        <th class="p-3">নাম</th>
-                                        <th class="p-3">হোয়াটসঅ্যাপ নম্বর</th>
-                                        <th class="p-3">ক্যাটাগরি / ট্যাগ</th>
-                                        <th class="p-3 text-right">অ্যাকশন</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="customer-table-body" class="text-sm divide-y">
-                                    <!-- Dynamic rows will inject here -->
-                                </tbody>
+                    </div>
+
+                    <!-- Live WhatsApp Phone Preview Side -->
+                    <div class="lg:col-span-5 flex flex-col items-center">
+                        <div class="w-full max-w-xs bg-slate-900 rounded-[35px] p-4 shadow-2xl border-4 border-slate-700">
+                            <!-- Mobile Screen -->
+                            <div class="bg-slate-100 rounded-[25px] overflow-hidden flex flex-col h-[480px]">
+                                <!-- WhatsApp Header -->
+                                <div class="bg-emerald-800 text-white p-3 flex items-center gap-2">
+                                    <div class="w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center font-bold text-xs">
+                                        BIZ
+                                    </div>
+                                    <div>
+                                        <p class="text-xs font-bold leading-tight">My Business Account</p>
+                                        <p class="text-[10px] text-emerald-200">Official Verified Account</p>
+                                    </div>
+                                </div>
+
+                                <!-- Chat Body -->
+                                <div class="chat-bg flex-1 p-3 overflow-y-auto space-y-3">
+                                    <div class="text-[10px] text-center bg-slate-200 text-slate-600 px-2 py-0.5 rounded shadow-sm w-max mx-auto">
+                                        আজকে
+                                    </div>
+
+                                    <!-- Incoming Single Message Bubble -->
+                                    <div class="bg-white rounded-lg p-2.5 shadow-sm max-w-[90%] text-xs space-y-2 border border-slate-200">
+                                        <img id="preview-img" src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80" class="w-full h-32 object-cover rounded-md">
+                                        <p id="preview-text" class="text-slate-800 whitespace-pre-line leading-relaxed">
+                                            সম্মানিত কাস্টমার, আমাদের গ্যা্যালারিতে নতুন প্রোডাক্ট চলে এসেছে! সেরা অফারে প্রোডাক্টটি পেতে এখনই আমাদের সাথে যোগাযোগ করুন।
+                                        </p>
+                                        <div class="flex justify-between items-center text-[9px] text-slate-400 pt-1">
+                                            <span class="text-emerald-600 font-semibold">🔒 Private 1-to-1</span>
+                                            <span>১০:৪৫ AM</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Chat Footer -->
+                                <div class="p-2 bg-slate-200 text-center text-[10px] text-slate-500">
+                                    কাস্টমার কেবল এই মেসেজটিই দেখতে পাবে
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-2">কাস্টমারের হোয়াটসঅ্যাপ ইনবক্স প্রিভিউ</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. HISTORY TAB -->
+            <section id="tab-history" class="tab-content hidden space-y-6">
+                <div class="bg-white p-5 rounded-xl border border-slate-200">
+                    <h2 class="text-lg font-bold text-slate-800">মেসেজ পাঠানো ও ডেলিভারি রিপোর্ট</h2>
+                    <p class="text-xs text-slate-500">প্রতিটি কাস্টমারের প্রাইভেট মেসেজের স্ট্যাটাস ট্র্যাকিং</p>
+                </div>
+
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 border-b border-slate-200 text-xs text-slate-500 uppercase tracking-wider">
+                                <th class="p-4">ক্যাম্পেইন নাম</th>
+                                <th class="p-4">প্রাপক কাস্টমার</th>
+                                <th class="p-4">ফোন নম্বর</th>
+                                <th class="p-4">ক্যাটাগরি</th>
+                                <th class="p-4">স্ট্যাটাস</th>
+                                <th class="p-4">সময়</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-table-body" class="divide-y divide-slate-100 text-sm">
+                            <!-- Injected dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 5. TECHNICAL GUIDE & ARCHITECTURE TAB -->
+            <section id="tab-tech-guide" class="tab-content hidden space-y-6">
+                <div class="bg-white p-6 rounded-xl border border-slate-200 space-y-6">
+                    <div class="border-b pb-4">
+                        <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2.5 py-0.5 rounded">Technical Architecture & Meta API Rules</span>
+                        <h2 class="text-xl font-bold text-slate-800 mt-1">WhatsApp Cloud API সিস্টেম গাইডলাইন ও খরচ ব্যাখ্যা</h2>
+                        <p class="text-xs text-slate-500">আপনার সফটওয়্যার ডেভলপমেন্ট শুরু করার আগে এই টেকনিক্যাল বিষয়গুলো জানা জরুরি।</p>
+                    </div>
+
+                    <!-- 1. Technical Solution & Architecture -->
+                    <div class="space-y-3">
+                        <h3 class="text-md font-bold text-slate-800 flex items-center gap-2">
+                            <i class="fa-solid fa-cubes text-emerald-600"></i>
+                            ১. প্রস্তাবিত সিস্টেম আর্কিটেকচার (System Architecture)
+                        </h3>
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            সিস্টেমটিকে সুরক্ষিত এবং গতিশীল করতে নিচের টেকনোলজি স্ট্যাক ব্যবহার করা উপযুক্ত:
+                        </p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                            <div class="bg-slate-50 p-3 rounded border border-slate-200">
+                                <span class="font-bold text-slate-800 block">Frontend (ইউজার ইন্টারফেস):</span>
+                                <span class="text-slate-600">React.js বা Next.js (মেসেজ ড্যাশবোর্ড, ফিল্টার ও প্রিভিউ-এর জন্য)।</span>
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded border border-slate-200">
+                                <span class="font-bold text-slate-800 block">Backend (সার্ভার):</span>
+                                <span class="text-slate-600">Node.js (Express) অথবা Python (FastAPI)। সাথে Redis Queue (যা একই সাথে ৫০০+ মেসেজ পাঠাতে সাহায্য করবে)।</span>
+                            </div>
+                            <div class="bg-slate-50 p-3 rounded border border-slate-200">
+                                <span class="font-bold text-slate-800 block">Database (ডেটাবেস):</span>
+                                <span class="text-slate-600">PostgreSQL বা MongoDB (কাস্টমার ক্যাটাগরি, ট্যাগ ও পারচেজ হিস্ট্রি জমানোর জন্য)।</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. WhatsApp Rules & Templates -->
+                    <div class="space-y-3 pt-2">
+                        <h3 class="text-md font-bold text-slate-800 flex items-center gap-2">
+                            <i class="fa-solid fa-[#10b981] fa-shield-halved text-emerald-600"></i>
+                            ২. Meta Cloud API-এর নিয়ম ও Message Template নিয়মাবলী
+                        </h3>
+                        <div class="bg-amber-50 border border-amber-200 rounded-lg p-4 text-xs space-y-2 text-amber-900">
+                            <p class="font-bold">গুরুত্বপূর্ণ নিয়ম:</p>
+                            <ul class="list-disc pl-5 space-y-1">
+                                <li><strong>Approved Template:</strong> আপনি নিজে থেকে কাস্টমারকে প্রথম মেসেজ পাঠাতে চাইলে Meta-র কাছে মেসেজ টেমপ্লেট (যেমন: <code class="bg-amber-100 px-1">Hello {{1}}, check our new product {{2}}</code>) এপ্রুভ করিয়ে নিতে হবে। এপ্রুভাল ১-১০ মিনিটের মধ্যে পেয়ে যায়।</li>
+                                <li><strong>24-Hour Messaging Window:</strong> কোনো কাস্টমার যদি রিপ্লাই দেয়, তবে পরবর্তী ২৪ ঘণ্টা আপনি তাকে যেকোনো ফ্রি-ফরম্যাট ডায়নামিক টেক্সট বা ছবি সম্পূর্ণ বিনামূল্যে পাঠাতে পারবেন।</li>
+                                <li><strong>No Spam Ban Risk:</strong> অফিশিয়াল API ব্যবহার করলে WhatsApp একাউন্ট ব্যান হওয়ার সম্ভাবনা প্রায় শূন্য থাকে (যদি না কাস্টমাররা অতিরিক্ত ব্লক/রিপোর্ট মারে)।</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 3. Customer Opt-In Requirement -->
+                    <div class="space-y-3 pt-2">
+                        <h3 class="text-md font-bold text-slate-800 flex items-center gap-2">
+                            <i class="fa-solid fa-user-check text-emerald-600"></i>
+                            ৩. কাস্টমার অপ্ট-ইন (Customer Opt-in)
+                        </h3>
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            মেটা (Meta)-র পলিসি অনুযায়ী কাস্টমারের সম্মতি থাকা আবশ্যক। আপনার শোরুম বা ওয়েবসাইটে রেজিস্ট্রেশনের সময় "I agree to receive updates via WhatsApp" চেকবিজ্ঞান রাখা উচিত, যাতে কাস্টমার স্প্যাম মনে না করে।
+                        </p>
+                    </div>
+
+                    <!-- 4. Cost Breakdown -->
+                    <div class="space-y-3 pt-2">
+                        <h3 class="text-md font-bold text-slate-800 flex items-center gap-2">
+                            <i class="fa-solid fa-file-invoice-dollar text-emerald-600"></i>
+                            ৪. আনুমানিক খরচ (Cost Structure)
+                        </h3>
+                        <div class="overflow-x-auto text-xs">
+                            <table class="w-full text-left border">
+                                <tr class="bg-slate-100 border-b">
+                                    <th class="p-2">খাতের নাম</th>
+                                    <th class="p-2">খরচের বিবরণ</th>
+                                </tr>
+                                <tr class="border-b">
+                                    <td class="p-2 font-semibold">Meta API Platform Fee</td>
+                                    <td class="p-2 text-emerald-700 font-bold">বিনামূল্যে (Meta ক্লাউড API ব্যবহারের জন্য কোনো মাসিক চার্জ নেয় না)</td>
+                                </tr>
+                                <tr class="border-b">
+                                    <td class="p-2 font-semibold">Marketing Conversation Rate (বাংলাদেশ)</td>
+                                    <td class="p-2">প্রতি নতুন ২৪-ঘণ্টার কনভারসেশনে প্রায় $0.03 - $0.06 (কাস্টমার কান্ট্রি অনুযায়ী)</td>
+                                </tr>
+                                <tr class="border-b">
+                                    <td class="p-2 font-semibold">Service Conversation (ইনকামিং)</td>
+                                    <td class="p-2">প্রতি মাসে প্রথম ১,০০০ টি সার্ভিস কনভারসেশন সম্পূর্ণ ফ্রি।</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-2 font-semibold">সার্ভার ও ডেভলপমেন্ট খরচ</td>
+                                    <td class="p-2">সফটওয়্যার ক্লাউড হোস্ট করার জন্য মাসিক সীমিত খরচ (যেমন: VPS/Heroku/Render)।</td>
+                                </tr>
                             </table>
                         </div>
                     </div>
+
                 </div>
+            </section>
 
-                <!-- 3. CAMPAIGN VIEW -->
-                <div id="view-campaigns" class="space-y-6 hidden">
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        
-                        <!-- Form Section -->
-                        <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-gray-100 space-y-4">
-                            <h3 class="text-lg font-semibold text-gray-800 mb-2">নতুন ক্যাম্পেইন তৈরি করুন</h3>
-                            
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">টার্গেট ক্যাটাগরি নির্বাচন করুন</label>
-                                <select id="campaign-category" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
-                                    <option value="All">সকল কাস্টমার (All Customers)</option>
-                                    <option value="VIP Customer">VIP Customer</option>
-                                    <option value="Wholesale Customer">Wholesale Customer</option>
-                                    <option value="Retail Customer">Retail Customer</option>
-                                    <option value="TV Customer">TV Customer</option>
-                                    <option value="Speaker Customer">Speaker Customer</option>
-                                    <option value="Regular Customer">Regular Customer</option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">ক্যাম্পেইনের শিরোনাম / নাম</label>
-                                <input type="text" id="campaign-title" placeholder="যেমন: ঈদ স্পেশাল ডিসকাউন্ট অফার" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
-                            </div>
-
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">মেসেজ টেক্সট (Product Description)</label>
-                                <textarea id="campaign-text" rows="4" oninput="updatePreview()" placeholder="আপনার প্রোডাক্টের বিবরণ এখানে লিখুন..." class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"></textarea>
-                            </div>
-
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">ছবির লিংক (Image URL)</label>
-                                <input type="text" id="campaign-image" oninput="updatePreview()" placeholder="https://example.com/product.jpg" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
-                            </div>
-
-                            <button onclick="sendCampaign()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2.5 rounded-lg transition flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-paper-plane"></i> ক্যাম্পেইন সেন্ড করুন (Cloud API)
-                            </button>
-                        </div>
-
-                        <!-- WhatsApp Live Preview Section -->
-                        <div class="bg-gray-100 p-6 rounded-xl shadow-inner border border-gray-200 flex flex-col items-center">
-                            <h4 class="text-sm font-bold text-gray-600 mb-4 uppercase tracking-wide">হোয়াটসঅ্যাপ চ্যাট প্রিভিউ</h4>
-                            
-                            <!-- Phone Frame -->
-                            <div class="w-full max-w-xs bg-emerald-50 rounded-2xl shadow-md border-4 border-gray-800 overflow-hidden flex flex-col h-[450px]">
-                                <!-- WhatsApp Header -->
-                                <div class="bg-emerald-800 text-white px-4 py-3 flex items-center gap-3">
-                                    <div class="w-8 h-8 rounded-full bg-white text-emerald-800 flex items-center justify-center font-bold text-xs">BC</div>
-                                    <div>
-                                        <p class="text-xs font-bold">আপনার বিজনেস অ্যাকাউন্ট</p>
-                                        <p class="text-[10px] text-emerald-200">Online</p>
-                                    </div>
-                                </div>
-                                <!-- Chat Bubble Body -->
-                                <div class="p-3 flex-1 overflow-y-auto space-y-2 bg-[#efeae2]">
-                                    <div class="bg-white rounded-lg p-2 shadow-sm max-w-[90%] text-xs space-y-2">
-                                        <div id="preview-image-container" class="hidden">
-                                            <img id="preview-img" src="" alt="Product" class="rounded w-full h-32 object-cover">
-                                        </div>
-                                        <p id="preview-text-content" class="text-gray-800 whitespace-pre-wrap">এখানে আপনার মেসেজের প্রিভিউ দেখা যাবে...</p>
-                                        <div class="text-[9px] text-gray-400 text-right">just now ✓✓</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-            </div>
         </main>
     </div>
 
-    <!-- Add Customer Modal -->
-    <div id="customer-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-xl max-w-md w-full p-6 space-y-4">
-            <h3 class="text-lg font-bold text-gray-800">নতুন কাস্টমার যোগ করুন</h3>
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">কাস্টমারের নাম</label>
-                <input type="text" id="modal-name" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="যেমন: আব্দুর রহিম">
+    <!-- MODAL: ADD CONTACT -->
+    <div id="add-contact-modal" class="fixed inset-0 bg-slate-900/50 hidden backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-xl shadow-xl max-w-md w-full p-6 space-y-4">
+            <div class="flex justify-between items-center border-b pb-3">
+                <h3 class="text-md font-bold text-slate-800">নতুন কাস্টমার যোগ করুন</h3>
+                <button onclick="toggleModal('add-contact-modal', false)" class="text-slate-400 hover:text-slate-600">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
             </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">হোয়াটসঅ্যাপ নম্বর (কান্ট্রি কোড সহ)</label>
-                <input type="text" id="modal-phone" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="যেমন: 8801712345678">
-            </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">ক্যাটাগরি / ট্যাগ</label>
-                <select id="modal-category" class="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
-                    <option value="VIP Customer">VIP Customer</option>
-                    <option value="Wholesale Customer">Wholesale Customer</option>
-                    <option value="Retail Customer">Retail Customer</option>
-                    <option value="TV Customer">TV Customer</option>
-                    <option value="Speaker Customer">Speaker Customer</option>
-                    <option value="Regular Customer">Regular Customer</option>
-                </select>
-            </div>
-            <div class="flex justify-end gap-3 pt-2">
-                <button onclick="closeAddCustomerModal()" class="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200">বাতিল</button>
-                <button onclick="saveCustomer()" class="px-4 py-2 text-sm font-medium text-white bg-emerald-600 rounded-lg hover:bg-emerald-700">সংরক্ষণ করুন</button>
-            </div>
+            
+            <form id="contact-form" onsubmit="saveContact(event)" class="space-y-3">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">কাস্টমারের নাম</label>
+                    <input type="text" id="input-name" required class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="যেমন: আব্দুর রহমান">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">WhatsApp নম্বর (কান্ট্রি কোডসহ)</label>
+                    <input type="text" id="input-phone" required class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="+8801700000000">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">ক্যাটাগরি/লিস্ট নির্বাচন করুন</label>
+                    <select id="input-category" class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+                        <option value="Wholesale Customer">Wholesale Customer</option>
+                        <option value="Retail Customer">Retail Customer</option>
+                        <option value="VIP Customer">VIP Customer</option>
+                        <option value="TV Customer">TV Customer</option>
+                        <option value="Speaker Customer">Speaker Customer</option>
+                        <option value="Regular Customer">Regular Customer</option>
+                    </select>
+                </div>
+                
+                <div class="pt-3 flex justify-end gap-2">
+                    <button type="button" onclick="toggleModal('add-contact-modal', false)" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg">বাতিল</button>
+                    <button type="submit" class="px-4 py-2 text-xs font-semibold bg-emerald-600 text-white rounded-lg hover:bg-emerald-700">সংরক্ষণ করুন</button>
+                </div>
+            </form>
         </div>
     </div>
 
-    <!-- Script Logic -->
+    <!-- Application Script Logic -->
     <script>
-        // Mock Database
-        let customers = [
-            { id: 1, name: "করিম আহমেদ", phone: "8801711112222", category: "VIP Customer" },
-            { id: 2, name: "রফিকুল ইসলাম", phone: "8801822223333", category: "Wholesale Customer" },
-            { id: 3, name: "নুসরাত জাহান", phone: "8801933334444", category: "Retail Customer" }
+        // Sample Initial Contacts Database
+        let contacts = [
+            { id: 1, name: 'রহিম ইলেকট্রনিক্স', phone: '+8801711111111', category: 'Wholesale Customer', status: 'Active' },
+            { id: 2, name: 'তানভীর আহমেদ', phone: '+8801822222222', category: 'VIP Customer', status: 'Active' },
+            { id: 3, name: 'করিম চৌধুরী', phone: '+8801933333333', category: 'TV Customer', status: 'Active' },
+            { id: 4, name: 'সাদ্দাম হোসেন', phone: '+8801644444444', category: 'Speaker Customer', status: 'Active' },
+            { id: 5, name: 'আলমগীর স্টোর', phone: '+8801555555555', category: 'Retail Customer', status: 'Active' },
+            { id: 6, name: 'জাহিদুল ইসলাম', phone: '+8801766666666', category: 'Regular Customer', status: 'Active' },
+            { id: 7, name: 'স্মার্ট ট্রেডার্স', phone: '+8801877777777', category: 'Wholesale Customer', status: 'Active' }
         ];
 
-        let totalCampaignsCount = 0;
+        let historyLogs = [];
 
-        function switchTab(tabName) {
-            document.getElementById('view-dashboard').classList.add('hidden');
-            document.getElementById('view-customers').classList.add('hidden');
-            document.getElementById('view-campaigns').classList.add('hidden');
+        // App Initialization
+        document.addEventListener('DOMContentLoaded', () => {
+            renderContacts('all');
+            updateDashboardCounts();
+            updateRecipientCount();
+        });
 
-            document.getElementById('nav-dashboard').className = "w-full flex items-center gap-3 px-6 py-3 text-emerald-200 hover:bg-emerald-700 hover:text-white transition";
-            document.getElementById('nav-customers').className = "w-full flex items-center gap-3 px-6 py-3 text-emerald-200 hover:bg-emerald-700 hover:text-white transition";
-            document.getElementById('nav-campaigns').className = "w-full flex items-center gap-3 px-6 py-3 text-emerald-200 hover:bg-emerald-700 hover:text-white transition";
+        // Tab Navigation Switcher
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-emerald-700', 'bg-emerald-50', 'font-semibold');
+                btn.classList.add('text-slate-600');
+            });
 
-            if(tabName === 'dashboard') {
-                document.getElementById('view-dashboard').classList.remove('hidden');
-                document.getElementById('nav-dashboard').className = "w-full flex items-center gap-3 px-6 py-3 bg-emerald-900 text-white font-medium transition";
-                document.getElementById('page-title').innerText = "ড্যাশবোর্ড ওভারভিউ";
-                updateStats();
-            } else if(tabName === 'customers') {
-                document.getElementById('view-customers').classList.remove('hidden');
-                document.getElementById('nav-customers').className = "w-full flex items-center gap-3 px-6 py-3 bg-emerald-900 text-white font-medium transition";
-                document.getElementById('page-title').innerText = "কাস্টমার ম্যানেজমেন্ট";
-                renderCustomers();
-            } else if(tabName === 'campaigns') {
-                document.getElementById('view-campaigns').classList.remove('hidden');
-                document.getElementById('nav-campaigns').className = "w-full flex items-center gap-3 px-6 py-3 bg-emerald-900 text-white font-medium transition";
-                document.getElementById('page-title').innerText = "ক্যাম্পেইন ও ব্রডকাস্ট";
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            const activeNav = document.getElementById(`nav-${tabId}`);
+            if(activeNav) {
+                activeNav.classList.add('text-emerald-700', 'bg-emerald-50', 'font-semibold');
+                activeNav.classList.remove('text-slate-600');
             }
         }
 
-        function updateStats() {
-            document.getElementById('stat-total-customers').innerText = customers.length;
-            document.getElementById('stat-total-campaigns').innerText = totalCampaignsCount;
-        }
-
-        function renderCustomers() {
-            const tbody = document.getElementById('customer-table-body');
+        // Render Contacts Table
+        function renderContacts(categoryFilter) {
+            const tbody = document.getElementById('contacts-table-body');
             tbody.innerHTML = '';
-            customers.forEach(c => {
-                tbody.innerHTML += `
-                    <tr class="border-b hover:bg-gray-50">
-                        <td class="p-3 font-medium text-gray-800">${c.name}</td>
-                        <td class="p-3 text-gray-600">${c.phone}</td>
-                        <td class="p-3"><span class="px-2 py-1 text-xs rounded-full bg-emerald-50 text-emerald-700 font-medium">${c.category}</span></td>
-                        <td class="p-3 text-right">
-                            <button onclick="deleteCustomer(${c.id})" class="text-red-500 hover:text-red-700"><i class="fa-solid fa-trash"></i></button>
-                        </td>
-                    </tr>
+
+            const filtered = categoryFilter === 'all' 
+                ? contacts 
+                : contacts.filter(c => c.category === categoryFilter);
+
+            if(filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400 text-xs">এই ক্যাটাগরিতে কোনো কাস্টমার পাওয়া যায়নি।</td></tr>`;
+                return;
+            }
+
+            filtered.forEach(c => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 transition";
+                tr.innerHTML = `
+                    <td class="p-4 font-semibold text-slate-800">${c.name}</td>
+                    <td class="p-4 text-slate-600 font-mono text-xs">${c.phone}</td>
+                    <td class="p-4">
+                        <span class="bg-emerald-100 text-emerald-800 text-xs px-2.5 py-1 rounded-full font-medium">
+                            ${c.category}
+                        </span>
+                    </td>
+                    <td class="p-4">
+                        <span class="text-xs text-emerald-600 font-semibold flex items-center gap-1">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> ${c.status}
+                        </span>
+                    </td>
+                    <td class="p-4 text-center">
+                        <button onclick="deleteContact(${c.id})" class="text-slate-400 hover:text-red-600 transition">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </td>
                 `;
+                tbody.appendChild(tr);
             });
         }
 
-        function openAddCustomerModal() {
-            document.getElementById('customer-modal').classList.remove('hidden');
+        // Filter Category Buttons Event
+        function filterContacts(cat) {
+            document.querySelectorAll('.cat-filter-btn').forEach(btn => {
+                if(btn.dataset.cat === cat) {
+                    btn.classList.remove('bg-slate-100', 'text-slate-600');
+                    btn.classList.add('bg-emerald-600', 'text-white');
+                } else {
+                    btn.classList.remove('bg-emerald-600', 'text-white');
+                    btn.classList.add('bg-slate-100', 'text-slate-600');
+                }
+            });
+            renderContacts(cat);
         }
 
-        function closeAddCustomerModal() {
-            document.getElementById('customer-modal').classList.add('hidden');
+        // Update Dashboard Stats
+        function updateDashboardCounts() {
+            document.getElementById('dash-total-contacts').innerText = contacts.length;
         }
 
-        function saveCustomer() {
-            const name = document.getElementById('modal-name').value;
-            const phone = document.getElementById('modal-phone').value;
-            const category = document.getElementById('modal-category').value;
-
-            if(!name || !phone) {
-                alert('দয়া করে নাম এবং ফোন নম্বর লিখুন।');
-                return;
-            }
-
-            customers.push({ id: Date.now(), name, phone, category });
-            closeAddCustomerModal();
-            renderCustomers();
-            updateStats();
-
-            document.getElementById('modal-name').value = '';
-            document.getElementById('modal-phone').value = '';
+        // Modal Handler
+        function toggleModal(modalId, show) {
+            const modal = document.getElementById(modalId);
+            if(show) modal.classList.remove('hidden');
+            else modal.classList.add('hidden');
         }
 
-        function deleteCustomer(id) {
-            customers = customers.filter(c => c.id !== id);
-            renderCustomers();
-            updateStats();
+        // Save Contact
+        function saveContact(e) {
+            e.preventDefault();
+            const name = document.getElementById('input-name').value;
+            const phone = document.getElementById('input-phone').value;
+            const category = document.getElementById('input-category').value;
+
+            const newContact = {
+                id: Date.now(),
+                name,
+                phone,
+                category,
+                status: 'Active'
+            };
+
+            contacts.push(newContact);
+            renderContacts('all');
+            updateDashboardCounts();
+            updateRecipientCount();
+            toggleModal('add-contact-modal', false);
+            document.getElementById('contact-form').reset();
         }
 
-        function updatePreview() {
-            const text = document.getElementById('campaign-text').value;
-            const imageUrl = document.getElementById('campaign-image').value;
-
-            const textElem = document.getElementById('preview-text-content');
-            const imgContainer = document.getElementById('preview-image-container');
-            const imgElem = document.getElementById('preview-img');
-
-            if(text.trim() !== '') {
-                textElem.innerText = text;
-            } else {
-                textElem.innerText = "এখানে আপনার মেসেজের প্রিভিউ দেখা যাবে...";
-            }
-
-            if(imageUrl.trim() !== '') {
-                imgElem.src = imageUrl;
-                imgContainer.classList.remove('hidden');
-            } else {
-                imgContainer.classList.add('hidden');
-            }
+        // Delete Contact
+        function deleteContact(id) {
+            contacts = contacts.filter(c => c.id !== id);
+            renderContacts('all');
+            updateDashboardCounts();
+            updateRecipientCount();
         }
 
-        function sendCampaign() {
-            const category = document.getElementById('campaign-category').value;
-            const text = document.getElementById('campaign-text').value;
-
-            let targetList = category === 'All' ? customers : customers.filter(c => c.category === category);
-
-            if(targetList.length === 0) {
-                alert('এই ক্যাটাগরিতে কোনো কাস্টমার নেই!');
-                return;
-            }
-
-            if(!text.trim()) {
-                alert('দয়া করে কিছু মেসেজ টেক্সট লিখুন।');
-                return;
-            }
-
-            totalCampaignsCount++;
-            alert(`সফলভাবে ক্যাম্পেইন পাঠানো সম্পন্ন হয়েছে!\n\nটার্গেট ক্যাটাগরি: ${category}\nমোট রিসিভার: ${targetList.length} জন কাস্টমার\n\n(নোট: প্রতিটি কাস্টমার আলাদা প্রাইভেট মেসেজ পেয়েছেন। কেউ কারো নম্বর দেখতে পাননি।)`);
+        // Campaign Dynamic Recipient Counter
+        function updateRecipientCount() {
+            const selectedCat = document.getElementById('campaign-category').value;
+            const badge = document.getElementById('recipient-count-badge');
             
-            document.getElementById('campaign-text').value = '';
-            document.getElementById('campaign-image').value = '';
-            updatePreview();
-            switchTab('dashboard');
+            let count = 0;
+            if(selectedCat === 'ALL') {
+                count = contacts.length;
+            } else {
+                count = contacts.filter(c => c.category === selectedCat).length;
+            }
+
+            badge.innerHTML = `<i class="fa-solid fa-circle-check"></i> <span>এই লিস্টে ${count} জন কাস্টমার নির্বাচন করা হয়েছে</span>`;
         }
 
-        // Initialize dashboard stats on load
-        window.onload = function() {
-            updateStats();
-        };
+        // Live Preview Update
+        function updatePreview() {
+            const msg = document.getElementById('campaign-message').value;
+            document.getElementById('preview-text').innerText = msg || "মেসেজের বিষয়বস্তু টাইপ করুন...";
+        }
+
+        // Handle Image Upload for Preview
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                document.getElementById('image-filename').innerText = file.name;
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('preview-img').src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Simulated Campaign Sending Process
+        function startCampaignSend() {
+            const selectedCat = document.getElementById('campaign-category').value;
+            const targetContacts = selectedCat === 'ALL' 
+                ? contacts 
+                : contacts.filter(c => c.category === selectedCat);
+
+            if(targetContacts.length === 0) {
+                alert("নির্বাচিত ক্যাটাগরিতে কোনো কাস্টমার নেই!");
+                return;
+            }
+
+            const sendBtn = document.getElementById('send-btn');
+            sendBtn.disabled = true;
+            sendBtn.classList.add('opacity-75');
+            sendBtn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> <span>প্রাইভেট মেসেজ পাঠানো হচ্ছে... (১-টু-১)</span>`;
+
+            setTimeout(() => {
+                const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                targetContacts.forEach(c => {
+                    historyLogs.unshift({
+                        campaign: "প্রোডাক্ট আপডেট ব্রডকাস্ট",
+                        customer: c.name,
+                        phone: c.phone,
+                        category: c.category,
+                        status: "Sent (Private)",
+                        time: now
+                    });
+                });
+
+                renderHistory();
+                sendBtn.disabled = false;
+                sendBtn.classList.remove('opacity-75');
+                sendBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> <span>মেসেজ পাঠানো শুরু করুন (১-টু-১ প্রাইভেট)</span>`;
+
+                alert(`সফলভাবে ${targetContacts.length} জন কাস্টমারকে আলাদাভাবে ইনবক্সে মেসেজ পাঠানো হয়েছে। কেউ কারো নম্বর দেখতে পাবে না!`);
+                switchTab('history');
+            }, 1800);
+        }
+
+        // Render History Table
+        function renderHistory() {
+            const tbody = document.getElementById('history-table-body');
+            tbody.innerHTML = '';
+
+            if(historyLogs.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-400 text-xs">এখনো কোনো ক্যাম্পেইন পাঠানো হয়নি।</td></tr>`;
+                return;
+            }
+
+            historyLogs.forEach(h => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="p-4 font-medium text-slate-800">${h.campaign}</td>
+                    <td class="p-4 text-slate-700">${h.customer}</td>
+                    <td class="p-4 font-mono text-xs text-slate-500">${h.phone}</td>
+                    <td class="p-4"><span class="bg-slate-100 text-slate-700 text-xs px-2 py-0.5 rounded">${h.category}</span></td>
+                    <td class="p-4 text-emerald-600 font-bold text-xs flex items-center gap-1">
+                        <i class="fa-solid fa-check-double text-blue-500"></i> ${h.status}
+                    </td>
+                    <td class="p-4 text-xs text-slate-400">${h.time}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
     </script>
 </body>
 </html>
